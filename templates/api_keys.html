@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage API Keys - Discord Gemini AI Bot</title>
+    <link rel="stylesheet" href="https://cdn.replit.com/agent/bootstrap-agent-dark-theme.min.css">
+    <style>
+        body {
+            padding-top: 2rem;
+            padding-bottom: 2rem;
+        }
+        .api-card {
+            margin-bottom: 1.5rem;
+            transition: transform 0.2s;
+        }
+        .api-card:hover {
+            transform: translateY(-5px);
+        }
+        .status-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 0.5rem;
+        }
+        .status-active {
+            background-color: var(--bs-success);
+        }
+        .status-inactive {
+            background-color: var(--bs-danger);
+        }
+        .api-info {
+            margin-bottom: 1.5rem;
+        }
+        .api-links {
+            margin-top: 0.5rem;
+        }
+        .api-links a {
+            margin-right: 1rem;
+            font-size: 0.875rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark rounded mb-4">
+            <div class="container-fluid">
+                <a class="navbar-brand d-flex align-items-center" href="/">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="var(--bs-info)" width="24" height="24" class="me-2">
+                        <path d="M12 2L2 7v10l10 5 10-5V7L12 2zm0 2.5L17 7 12 9.5 7 7l5-2.5zM4 8.5l7 3.5v7l-7-3.5v-7zm16 0v7l-7 3.5v-7l7-3.5z"/>
+                    </svg>
+                    Discord Gemini AI Bot
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/dashboard">Dashboard</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/dashboard/commands">Commands</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/dashboard/config">Configuration</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <div class="row mb-4">
+            <div class="col-12">
+                <h1 class="mb-3">API Keys</h1>
+                <p class="lead">Manage your Discord and Gemini API keys required for bot operation.</p>
+                
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                                {{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 mb-4">
+                <div class="card bg-dark h-100">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">Discord API Token</h5>
+                        <div>
+                            <span class="status-indicator {{ 'status-active' if discord_token_set else 'status-inactive' }}"></span>
+                            <span>{{ 'Configured' if discord_token_set else 'Not Configured' }}</span>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="api-info">
+                            <p>The Discord API Token is required to connect your bot to Discord's servers. Without this token, your bot will not be able to operate on Discord.</p>
+                            <div class="alert alert-info">
+                                <strong>Important:</strong> Never share your Discord API token publicly. Anyone with this token can control your bot.
+                            </div>
+                        </div>
+                        
+                        <form action="/dashboard/api-keys" method="post">
+                            <div class="mb-3">
+                                <label for="discord_token" class="form-label">Discord API Token</label>
+                                <input type="password" class="form-control" id="discord_token" name="discord_token" placeholder="{{ 'Update token (current token preserved if empty)' if discord_token_set else 'Enter Discord API token' }}">
+                            </div>
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary">Save Discord Token</button>
+                            </div>
+                        </form>
+                        
+                        <div class="api-links mt-4">
+                            <p>Don't have a Discord token yet?</p>
+                            <a href="https://discord.com/developers/applications" target="_blank" class="text-info">Discord Developer Portal <i class="bi bi-box-arrow-up-right"></i></a>
+                            <a href="/setup" class="text-info">Setup Guide <i class="bi bi-book"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-6 mb-4">
+                <div class="card bg-dark h-100">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">Gemini API Key</h5>
+                        <div>
+                            <span class="status-indicator {{ 'status-active' if gemini_api_key_set else 'status-inactive' }}"></span>
+                            <span>{{ 'Configured' if gemini_api_key_set else 'Not Configured' }}</span>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="api-info">
+                            <p>The Gemini API Key enables your bot to communicate with Google's Gemini AI models. This key is necessary for the bot to generate intelligent responses.</p>
+                            <div class="alert alert-info">
+                                <strong>Important:</strong> Keep your Gemini API key secure. API usage is tied to this key and may incur charges.
+                            </div>
+                        </div>
+                        
+                        <form action="/dashboard/api-keys" method="post">
+                            <div class="mb-3">
+                                <label for="gemini_api_key" class="form-label">Gemini API Key</label>
+                                <input type="password" class="form-control" id="gemini_api_key" name="gemini_api_key" placeholder="{{ 'Update key (current key preserved if empty)' if gemini_api_key_set else 'Enter Gemini API key' }}">
+                            </div>
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary">Save Gemini Key</button>
+                            </div>
+                        </form>
+                        
+                        <div class="api-links mt-4">
+                            <p>Don't have a Gemini API key yet?</p>
+                            <a href="https://ai.google.dev/gemini-api" target="_blank" class="text-info">Google AI Studio <i class="bi bi-box-arrow-up-right"></i></a>
+                            <a href="/setup" class="text-info">Setup Guide <i class="bi bi-book"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="alert alert-warning mt-3">
+            <h5 class="alert-heading">Security Notice</h5>
+            <p>API keys are stored in your environment variables (.env file) and are never exposed to users.</p>
+            <p>For additional security:</p>
+            <ul>
+                <li>Regularly rotate your API keys</li>
+                <li>Set appropriate permissions on your Discord bot</li>
+                <li>Apply rate limits to your Gemini API usage</li>
+            </ul>
+        </div>
+
+        <footer class="py-4 mt-5 bg-dark rounded">
+            <div class="container px-4">
+                <div class="row">
+                    <div class="col-md-6">
+                        <p>&copy; 2025 Discord Gemini AI Bot</p>
+                    </div>
+                    <div class="col-md-6 text-md-end">
+                        <a href="/dashboard" class="btn btn-outline-secondary">Back to Dashboard</a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

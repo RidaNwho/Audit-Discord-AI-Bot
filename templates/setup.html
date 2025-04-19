@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Setup Guide - Discord Gemini AI Bot</title>
+    <link rel="stylesheet" href="https://cdn.replit.com/agent/bootstrap-agent-dark-theme.min.css">
+    <style>
+        body {
+            padding-top: 2rem;
+            padding-bottom: 2rem;
+        }
+        .setup-step {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            background-color: var(--bs-dark);
+        }
+        .step-number {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--bs-primary);
+            color: white;
+            font-weight: bold;
+            margin-right: 1rem;
+        }
+        .step-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        .code-block {
+            background-color: rgba(var(--bs-dark-rgb), 0.4);
+            padding: 1rem;
+            border-radius: 0.5rem;
+            font-family: monospace;
+            margin: 1rem 0;
+            position: relative;
+        }
+        .copy-btn {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            padding: 0.2rem 0.5rem;
+            font-size: 0.8rem;
+        }
+        .api-link {
+            display: inline-block;
+            margin-top: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .setup-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 0.5rem;
+            margin: 1rem 0;
+            border: 1px solid var(--bs-dark-border-subtle);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark rounded mb-4">
+            <div class="container-fluid">
+                <a class="navbar-brand d-flex align-items-center" href="/">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="var(--bs-info)" width="24" height="24" class="me-2">
+                        <path d="M12 2L2 7v10l10 5 10-5V7L12 2zm0 2.5L17 7 12 9.5 7 7l5-2.5zM4 8.5l7 3.5v7l-7-3.5v-7zm16 0v7l-7 3.5v-7l7-3.5z"/>
+                    </svg>
+                    Discord Gemini AI Bot
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="/setup">Setup</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/docs">Documentation</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/dashboard">Dashboard</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <div class="row mb-4">
+            <div class="col-12">
+                <h1 class="mb-3">Bot Setup Guide</h1>
+                <p class="lead">Follow these steps to get your Discord Gemini AI Bot up and running.</p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <div class="setup-step">
+                    <div class="step-header">
+                        <div class="step-number">1</div>
+                        <h3 class="mb-0">Create a Discord Bot</h3>
+                    </div>
+                    <p>First, you need to create a new Discord application and bot user:</p>
+                    <ol>
+                        <li>Go to the <a href="https://discord.com/developers/applications" target="_blank" class="text-info">Discord Developer Portal</a></li>
+                        <li>Click on "New Application" and give it a name (e.g., "Gemini AI Bot")</li>
+                        <li>Navigate to the "Bot" tab in the left sidebar</li>
+                        <li>Click "Add Bot" and confirm</li>
+                        <li>Under the "Privileged Gateway Intents" section, enable:
+                            <ul>
+                                <li>Presence Intent</li>
+                                <li>Server Members Intent</li>
+                                <li>Message Content Intent (important for reading messages!)</li>
+                            </ul>
+                        </li>
+                        <li>Save your changes</li>
+                    </ol>
+                    
+                    <div class="alert alert-info">
+                        <strong>Important:</strong> The Message Content Intent is required for the bot to read and respond to messages in Discord.
+                    </div>
+                </div>
+                
+                <div class="setup-step">
+                    <div class="step-header">
+                        <div class="step-number">2</div>
+                        <h3 class="mb-0">Get Your Discord Bot Token</h3>
+                    </div>
+                    <p>Now you need to get your Discord bot token:</p>
+                    <ol>
+                        <li>On the Bot tab, click "Reset Token" (or "Copy" if you already have a token)</li>
+                        <li>Copy the token that appears</li>
+                        <li>Go to your bot dashboard: <a href="/dashboard/api-keys" class="text-info">API Keys Settings</a></li>
+                        <li>Paste the token in the "Discord API Token" field and save</li>
+                    </ol>
+                    
+                    <div class="alert alert-warning">
+                        <strong>Security Warning:</strong> Never share your bot token with anyone or commit it to public repositories. This token provides full access to your bot.
+                    </div>
+                </div>
+                
+                <div class="setup-step">
+                    <div class="step-header">
+                        <div class="step-number">3</div>
+                        <h3 class="mb-0">Invite Your Bot to Your Server</h3>
+                    </div>
+                    <p>Let's create an invite link for your bot:</p>
+                    <ol>
+                        <li>Go to the "OAuth2" tab in the left sidebar of the Discord Developer Portal</li>
+                        <li>Select "URL Generator" under OAuth2</li>
+                        <li>In the "Scopes" section, select "bot" and "applications.commands"</li>
+                        <li>In the "Bot Permissions" section, select:
+                            <ul>
+                                <li>Read Messages/View Channels</li>
+                                <li>Send Messages</li>
+                                <li>Embed Links</li>
+                                <li>Attach Files</li>
+                                <li>Read Message History</li>
+                                <li>Add Reactions</li>
+                            </ul>
+                        </li>
+                        <li>Copy the generated URL at the bottom of the page</li>
+                        <li>Open this URL in your browser and select the Discord server where you want to add your bot</li>
+                        <li>Follow the prompts to authorize the bot</li>
+                    </ol>
+                </div>
+                
+                <div class="setup-step">
+                    <div class="step-header">
+                        <div class="step-number">4</div>
+                        <h3 class="mb-0">Get a Gemini API Key</h3>
+                    </div>
+                    <p>To use Google's Gemini AI with your bot, you need a Gemini API key:</p>
+                    <ol>
+                        <li>Go to <a href="https://ai.google.dev/gemini-api" target="_blank" class="text-info">Google AI Studio</a></li>
+                        <li>Sign in with your Google account</li>
+                        <li>Create a new API key or use an existing one</li>
+                        <li>Copy the API key</li>
+                        <li>Go to your bot dashboard: <a href="/dashboard/api-keys" class="text-info">API Keys Settings</a></li>
+                        <li>Paste the key in the "Gemini API Key" field and save</li>
+                    </ol>
+                    
+                    <div class="alert alert-info">
+                        <strong>Note:</strong> Google may offer a free tier of usage for Gemini API with a limited number of requests per minute and per month. Check Google's pricing for more details.
+                    </div>
+                </div>
+                
+                <div class="setup-step">
+                    <div class="step-header">
+                        <div class="step-number">5</div>
+                        <h3 class="mb-0">Start Your Bot</h3>
+                    </div>
+                    <p>Once you've configured both API keys, you can start your bot:</p>
+                    <ol>
+                        <li>Go to your bot dashboard: <a href="/dashboard" class="text-info">Dashboard</a></li>
+                        <li>Click the "Start Bot" button in the Bot Status section</li>
+                        <li>Verify that the bot status changes to "Online"</li>
+                        <li>Check your Discord server - your bot should now be online!</li>
+                    </ol>
+                </div>
+                
+                <div class="setup-step">
+                    <div class="step-header">
+                        <div class="step-number">6</div>
+                        <h3 class="mb-0">Test Your Bot</h3>
+                    </div>
+                    <p>Let's test your bot to make sure it's working properly:</p>
+                    <ol>
+                        <li>In your Discord server, type <code>!ask What is artificial intelligence?</code></li>
+                        <li>The bot should respond with an explanation of AI powered by Gemini</li>
+                        <li>To analyze an image, type <code>!analyze</code> and attach an image to your message</li>
+                        <li>For help with available commands, type <code>!help_gemini</code></li>
+                    </ol>
+                    
+                    <div class="alert alert-success">
+                        <strong>Congratulations!</strong> If your bot responded, you've successfully set up your Discord Gemini AI Bot!
+                    </div>
+                </div>
+                
+                <div class="setup-step">
+                    <div class="step-header">
+                        <div class="step-number">7</div>
+                        <h3 class="mb-0">Customize Your Bot</h3>
+                    </div>
+                    <p>Now that your bot is working, you can customize it:</p>
+                    <ul>
+                        <li><a href="/dashboard/commands" class="text-info">Add custom commands</a> - Create commands with predefined prompts or templates</li>
+                        <li><a href="/dashboard/config" class="text-info">Adjust configuration</a> - Change the command prefix, response temperature, etc.</li>
+                        <li><a href="/docs" class="text-info">Read the documentation</a> - Learn about all the features and options available</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-5">
+            <div class="col-12">
+                <div class="card bg-dark">
+                    <div class="card-header">
+                        <h4 class="mb-0">Need Help?</h4>
+                    </div>
+                    <div class="card-body">
+                        <p>If you encounter any issues setting up your bot, check these common troubleshooting steps:</p>
+                        <ul>
+                            <li>Verify that both API keys are correctly entered</li>
+                            <li>Ensure the bot has the Message Content Intent enabled</li>
+                            <li>Check that the bot has the necessary permissions in your Discord server</li>
+                            <li>Look at the logs in the <a href="/dashboard/logs" class="text-info">Logs section</a> for any error messages</li>
+                        </ul>
+                        <p>For more assistance, visit the <a href="https://github.com/your-username/discord-gemini-bot" target="_blank" class="text-info">project repository</a> or create an issue if you encounter a bug.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer class="py-4 mt-5 bg-dark rounded">
+            <div class="container px-4">
+                <div class="row">
+                    <div class="col-md-6">
+                        <p>&copy; 2025 Discord Gemini AI Bot</p>
+                    </div>
+                    <div class="col-md-6 text-md-end">
+                        <a href="/dashboard" class="btn btn-primary">Go to Dashboard</a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Add copy functionality to code blocks
+        document.addEventListener('DOMContentLoaded', function() {
+            const codeBlocks = document.querySelectorAll('.code-block');
+            
+            codeBlocks.forEach(block => {
+                const copyBtn = document.createElement('button');
+                copyBtn.className = 'btn btn-sm btn-outline-secondary copy-btn';
+                copyBtn.textContent = 'Copy';
+                copyBtn.addEventListener('click', function() {
+                    const codeText = block.textContent;
+                    navigator.clipboard.writeText(codeText.trim())
+                        .then(() => {
+                            copyBtn.textContent = 'Copied!';
+                            setTimeout(() => {
+                                copyBtn.textContent = 'Copy';
+                            }, 2000);
+                        })
+                        .catch(err => {
+                            console.error('Failed to copy: ', err);
+                            copyBtn.textContent = 'Error';
+                            setTimeout(() => {
+                                copyBtn.textContent = 'Copy';
+                            }, 2000);
+                        });
+                });
+                block.appendChild(copyBtn);
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bot Configuration - Discord Gemini AI Bot</title>
+    <link rel="stylesheet" href="https://cdn.replit.com/agent/bootstrap-agent-dark-theme.min.css">
+    <style>
+        body {
+            padding-top: 2rem;
+            padding-bottom: 2rem;
+        }
+        .config-card {
+            margin-bottom: 1.5rem;
+            transition: transform 0.2s;
+        }
+        .config-card:hover {
+            transform: translateY(-5px);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark rounded mb-4">
+            <div class="container-fluid">
+                <a class="navbar-brand d-flex align-items-center" href="/">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="var(--bs-info)" width="24" height="24" class="me-2">
+                        <path d="M12 2L2 7v10l10 5 10-5V7L12 2zm0 2.5L17 7 12 9.5 7 7l5-2.5zM4 8.5l7 3.5v7l-7-3.5v-7zm16 0v7l-7 3.5v-7l7-3.5z"/>
+                    </svg>
+                    Discord Gemini AI Bot
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/dashboard">Dashboard</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/dashboard/commands">Commands</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="/dashboard/config">Configuration</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <div class="row mb-4">
+            <div class="col-12">
+                <h1 class="mb-3">Bot Configuration</h1>
+                <p class="lead">Manage your Discord bot's settings and behavior.</p>
+                
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                                {{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <div class="card bg-dark">
+                    <div class="card-header">
+                        <h5 class="mb-0">Bot Settings</h5>
+                    </div>
+                    <div class="card-body">
+                        <form action="/dashboard/config" method="post">
+                            {% if configs %}
+                                <div class="row">
+                                    {% for config in configs %}
+                                        <div class="col-md-6 mb-3">
+                                            <div class="card bg-dark-subtle config-card">
+                                                <div class="card-body">
+                                                    <h6 class="card-title">{{ config.setting_name }}</h6>
+                                                    <p class="card-text small text-muted mb-3">{{ config.setting_description }}</p>
+                                                    
+                                                    {% if config.setting_name == 'command_prefix' %}
+                                                        <div class="input-group">
+                                                            <input type="text" class="form-control" id="config_{{ config.id }}" name="config_{{ config.id }}" value="{{ config.setting_value }}" maxlength="5">
+                                                            <span class="input-group-text">command</span>
+                                                        </div>
+                                                        <div class="form-text">Single character recommended (!, ., $, etc.)</div>
+                                                    
+                                                    {% elif config.setting_name == 'response_temperature' %}
+                                                        <div class="input-group">
+                                                            <input type="range" class="form-range" id="tempRange_{{ config.id }}" min="0" max="1" step="0.1" value="{{ config.setting_value }}" oninput="updateTempValue(this.value, '{{ config.id }}')">
+                                                        </div>
+                                                        <div class="d-flex justify-content-between">
+                                                            <span class="form-text">More Predictable</span>
+                                                            <span class="form-text" id="tempValue_{{ config.id }}">{{ config.setting_value }}</span>
+                                                            <span class="form-text">More Random</span>
+                                                        </div>
+                                                        <input type="hidden" id="config_{{ config.id }}" name="config_{{ config.id }}" value="{{ config.setting_value }}">
+                                                    
+                                                    {% elif config.setting_name == 'max_response_length' %}
+                                                        <div class="input-group">
+                                                            <input type="number" class="form-control" id="config_{{ config.id }}" name="config_{{ config.id }}" value="{{ config.setting_value }}" min="500" max="4000">
+                                                            <span class="input-group-text">characters</span>
+                                                        </div>
+                                                        <div class="form-text">Discord maximum is 2000 per message</div>
+                                                    
+                                                    {% else %}
+                                                        <input type="text" class="form-control" id="config_{{ config.id }}" name="config_{{ config.id }}" value="{{ config.setting_value }}">
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                                
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                                    <button type="reset" class="btn btn-secondary">Reset</button>
+                                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                                </div>
+                            {% else %}
+                                <div class="text-center text-muted py-5">
+                                    <p>No configuration settings available.</p>
+                                    <p>Default settings will be used.</p>
+                                </div>
+                            {% endif %}
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="alert alert-info mt-4">
+            <h5 class="alert-heading">Configuration Tips</h5>
+            <p><strong>Command Prefix:</strong> This is the character used before commands, like <code>!ask</code>. Choose something that won't conflict with other bots.</p>
+            <p><strong>Response Temperature:</strong> Controls how creative or random the AI responses are. Lower values are more focused and deterministic, higher values are more creative and varied.</p>
+            <p><strong>Max Response Length:</strong> The maximum length for each message chunk. Discord has a 2000 character limit per message, longer responses will be split into multiple messages.</p>
+        </div>
+
+        <footer class="py-4 mt-5 bg-dark rounded">
+            <div class="container px-4">
+                <div class="row">
+                    <div class="col-md-6">
+                        <p>&copy; 2025 Discord Gemini AI Bot</p>
+                    </div>
+                    <div class="col-md-6 text-md-end">
+                        <a href="/dashboard" class="btn btn-outline-secondary">Back to Dashboard</a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function updateTempValue(value, id) {
+            document.getElementById('tempValue_' + id).textContent = value;
+            document.getElementById('config_' + id).value = value;
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bot Logs - Discord Gemini AI Bot</title>
+    <link rel="stylesheet" href="https://cdn.replit.com/agent/bootstrap-agent-dark-theme.min.css">
+    <style>
+        body {
+            padding-top: 2rem;
+            padding-bottom: 2rem;
+        }
+        .log-container {
+            background-color: var(--bs-dark);
+            border-radius: 0.375rem;
+            font-family: monospace;
+        }
+        .log-entry {
+            padding: 0.75rem;
+            border-bottom: 1px solid var(--bs-dark-border-subtle);
+        }
+        .log-entry:last-child {
+            border-bottom: none;
+        }
+        .log-level-INFO {
+            color: var(--bs-info);
+        }
+        .log-level-WARNING {
+            color: var(--bs-warning);
+        }
+        .log-level-ERROR {
+            color: var(--bs-danger);
+        }
+        .log-time {
+            font-size: 0.875rem;
+            color: var(--bs-gray-600);
+        }
+        .log-source {
+            font-size: 0.875rem;
+            background-color: rgba(var(--bs-dark-rgb), 0.4);
+            padding: 0.2rem 0.4rem;
+            border-radius: 0.25rem;
+            margin-right: 0.5rem;
+        }
+        .log-level-badge {
+            padding: 0.2rem 0.4rem;
+            border-radius: 0.25rem;
+            font-size: 0.75rem;
+            margin-right: 0.5rem;
+        }
+        .filter-btn {
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .pagination-container {
+            margin-top: 1.5rem;
+        }
+        .log-message {
+            word-break: break-word;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark rounded mb-4">
+            <div class="container-fluid">
+                <a class="navbar-brand d-flex align-items-center" href="/">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="var(--bs-info)" width="24" height="24" class="me-2">
+                        <path d="M12 2L2 7v10l10 5 10-5V7L12 2zm0 2.5L17 7 12 9.5 7 7l5-2.5zM4 8.5l7 3.5v7l-7-3.5v-7zm16 0v7l-7 3.5v-7l7-3.5z"/>
+                    </svg>
+                    Discord Gemini AI Bot
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/dashboard">Dashboard</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/dashboard/commands">Commands</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/dashboard/config">Configuration</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <div class="row mb-4">
+            <div class="col-12">
+                <h1 class="mb-3">Bot Logs</h1>
+                <p class="lead">View detailed log history of your Discord bot.</p>
+            </div>
+        </div>
+
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card bg-dark">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">Log Filters</h5>
+                        <a href="javascript:void(0)" class="btn btn-sm btn-outline-secondary" onclick="refreshLogs()">
+                            <i class="bi bi-arrow-clockwise"></i> Refresh
+                        </a>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <button type="button" class="btn btn-sm btn-outline-light filter-btn active" onclick="filterLogs('all')">All</button>
+                            <button type="button" class="btn btn-sm btn-outline-info filter-btn" onclick="filterLogs('INFO')">Info</button>
+                            <button type="button" class="btn btn-sm btn-outline-warning filter-btn" onclick="filterLogs('WARNING')">Warning</button>
+                            <button type="button" class="btn btn-sm btn-outline-danger filter-btn" onclick="filterLogs('ERROR')">Error</button>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="searchInput" placeholder="Search in logs...">
+                                    <button class="btn btn-outline-secondary" type="button" onclick="searchLogs()">Search</button>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="d-flex justify-content-md-end mt-3 mt-md-0">
+                                    <select class="form-select" id="sourceFilter" onchange="filterBySource(this.value)" style="max-width: 200px;">
+                                        <option value="">All Sources</option>
+                                        <option value="WEB">Web Interface</option>
+                                        <option value="BOT">Discord Bot</option>
+                                        <option value="COMMANDS">Bot Commands</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <div class="card bg-dark">
+                    <div class="card-header">
+                        <h5 class="mb-0">Log History</h5>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="log-container">
+                            {% if logs.items %}
+                                {% for log in logs.items %}
+                                    <div class="log-entry" data-level="{{ log.log_level }}" data-source="{{ log.source or 'SYSTEM' }}">
+                                        <div class="d-flex align-items-center mb-2">
+                                            <span class="log-time">{{ log.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}</span>
+                                            <span class="ms-2 log-level-badge bg-{{ 'info' if log.log_level == 'INFO' else 'warning' if log.log_level == 'WARNING' else 'danger' }}">
+                                                {{ log.log_level }}
+                                            </span>
+                                            <span class="log-source">{{ log.source or 'SYSTEM' }}</span>
+                                        </div>
+                                        <div class="log-message">{{ log.message }}</div>
+                                    </div>
+                                {% endfor %}
+                            {% else %}
+                                <div class="text-center text-muted py-5">
+                                    <p>No logs available.</p>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                
+                {% if logs.pages > 1 %}
+                    <div class="pagination-container d-flex justify-content-center">
+                        <nav>
+                            <ul class="pagination">
+                                {% if logs.has_prev %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="{{ url_for('view_logs', page=logs.prev_num) }}" aria-label="Previous">
+                                            <span aria-hidden="true">&laquo;</span>
+                                        </a>
+                                    </li>
+                                {% else %}
+                                    <li class="page-item disabled">
+                                        <a class="page-link" href="#" aria-label="Previous">
+                                            <span aria-hidden="true">&laquo;</span>
+                                        </a>
+                                    </li>
+                                {% endif %}
+                                
+                                {% for page_num in logs.iter_pages(left_edge=1, right_edge=1, left_current=2, right_current=2) %}
+                                    {% if page_num %}
+                                        {% if page_num == logs.page %}
+                                            <li class="page-item active">
+                                                <a class="page-link" href="{{ url_for('view_logs', page=page_num) }}">{{ page_num }}</a>
+                                            </li>
+                                        {% else %}
+                                            <li class="page-item">
+                                                <a class="page-link" href="{{ url_for('view_logs', page=page_num) }}">{{ page_num }}</a>
+                                            </li>
+                                        {% endif %}
+                                    {% else %}
+                                        <li class="page-item disabled">
+                                            <a class="page-link" href="#">...</a>
+                                        </li>
+                                    {% endif %}
+                                {% endfor %}
+                                
+                                {% if logs.has_next %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="{{ url_for('view_logs', page=logs.next_num) }}" aria-label="Next">
+                                            <span aria-hidden="true">&raquo;</span>
+                                        </a>
+                                    </li>
+                                {% else %}
+                                    <li class="page-item disabled">
+                                        <a class="page-link" href="#" aria-label="Next">
+                                            <span aria-hidden="true">&raquo;</span>
+                                        </a>
+                                    </li>
+                                {% endif %}
+                            </ul>
+                        </nav>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <footer class="py-4 mt-5 bg-dark rounded">
+            <div class="container px-4">
+                <div class="row">
+                    <div class="col-md-6">
+                        <p>&copy; 2025 Discord Gemini AI Bot</p>
+                    </div>
+                    <div class="col-md-6 text-md-end">
+                        <a href="/dashboard" class="btn btn-outline-secondary">Back to Dashboard</a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function filterLogs(level) {
+            const entries = document.querySelectorAll('.log-entry');
+            const buttons = document.querySelectorAll('.filter-btn');
+            
+            // Update button active state
+            buttons.forEach(btn => {
+                btn.classList.remove('active');
+                if ((level === 'all' && btn.innerText === 'All') ||
+                    (level === 'INFO' && btn.innerText === 'Info') ||
+                    (level === 'WARNING' && btn.innerText === 'Warning') ||
+                    (level === 'ERROR' && btn.innerText === 'Error')) {
+                    btn.classList.add('active');
+                }
+            });
+            
+            // Filter logs
+            entries.forEach(entry => {
+                if (level === 'all' || entry.getAttribute('data-level') === level) {
+                    entry.style.display = '';
+                } else {
+                    entry.style.display = 'none';
+                }
+            });
+            
+            // Also apply any source filter
+            const sourceFilter = document.getElementById('sourceFilter').value;
+            if (sourceFilter) {
+                filterBySourceAfterLevelFilter(sourceFilter);
+            }
+        }
+        
+        function filterBySource(source) {
+            // First apply level filter
+            const activeButton = document.querySelector('.filter-btn.active');
+            const level = activeButton.innerText === 'All' ? 'all' : activeButton.innerText.toUpperCase();
+            filterLogs(level);
+            
+            // Then apply source filter if needed
+            if (source) {
+                filterBySourceAfterLevelFilter(source);
+            }
+        }
+        
+        function filterBySourceAfterLevelFilter(source) {
+            const entries = document.querySelectorAll('.log-entry');
+            entries.forEach(entry => {
+                if (entry.style.display !== 'none') {
+                    if (source === '' || entry.getAttribute('data-source') === source) {
+                        entry.style.display = '';
+                    } else {
+                        entry.style.display = 'none';
+                    }
+                }
+            });
+        }
+        
+        function searchLogs() {
+            const searchText = document.getElementById('searchInput').value.toLowerCase();
+            const entries = document.querySelectorAll('.log-entry');
+            
+            entries.forEach(entry => {
+                const message = entry.querySelector('.log-message').innerText.toLowerCase();
+                const matchesSearch = searchText === '' || message.includes(searchText);
+                
+                // Apply search filter, but respect existing level and source filters
+                if (matchesSearch) {
+                    // Don't show if it's already hidden by other filters
+                    if (entry.style.display !== 'none') {
+                        entry.style.display = '';
+                    }
+                } else {
+                    entry.style.display = 'none';
+                }
+            });
+        }
+        
+        function refreshLogs() {
+            window.location.reload();
+        }
+        
+        // Add event listener for search on Enter key
+        document.getElementById('searchInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                searchLogs();
+            }
+        });
+    </script>
+</body>
+</html>

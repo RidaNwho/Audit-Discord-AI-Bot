@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentation - Discord Gemini AI Bot</title>
+    <link rel="stylesheet" href="https://cdn.replit.com/agent/bootstrap-agent-dark-theme.min.css">
+    <style>
+        body {
+            padding-top: 2rem;
+            padding-bottom: 2rem;
+        }
+        .docs-sidebar {
+            position: sticky;
+            top: 2rem;
+            height: calc(100vh - 4rem);
+            overflow-y: auto;
+        }
+        .docs-content {
+            padding-bottom: 2rem;
+        }
+        .docs-section {
+            margin-bottom: 3rem;
+            padding-top: 1rem;
+        }
+        .code-block {
+            background-color: #121212;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+        .command-card {
+            margin-bottom: 1.5rem;
+            transition: transform 0.3s;
+        }
+        .command-card:hover {
+            transform: translateY(-5px);
+        }
+        .table-dark {
+            background-color: var(--bs-dark);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark rounded mb-4">
+            <div class="container-fluid">
+                <a class="navbar-brand d-flex align-items-center" href="/">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="var(--bs-info)" width="24" height="24" class="me-2">
+                        <path d="M12 2L2 7v10l10 5 10-5V7L12 2zm0 2.5L17 7 12 9.5 7 7l5-2.5zM4 8.5l7 3.5v7l-7-3.5v-7zm16 0v7l-7 3.5v-7l7-3.5z"/>
+                    </svg>
+                    Discord Gemini AI Bot
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/setup">Setup</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="/docs">Documentation</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="https://github.com/username/discord-gemini-bot" target="_blank">GitHub</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <div class="row">
+            <div class="col-lg-3">
+                <div class="docs-sidebar">
+                    <div class="list-group">
+                        <a href="#overview" class="list-group-item list-group-item-action bg-dark">Overview</a>
+                        <a href="#commands" class="list-group-item list-group-item-action bg-dark">Bot Commands</a>
+                        <a href="#configuration" class="list-group-item list-group-item-action bg-dark">Configuration</a>
+                        <a href="#customization" class="list-group-item list-group-item-action bg-dark">Customization</a>
+                        <a href="#limitations" class="list-group-item list-group-item-action bg-dark">Limitations</a>
+                        <a href="#troubleshooting" class="list-group-item list-group-item-action bg-dark">Troubleshooting</a>
+                        <a href="#development" class="list-group-item list-group-item-action bg-dark">Development</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-9">
+                <div class="docs-content">
+                    <section id="overview" class="docs-section">
+                        <h1>Discord Gemini AI Bot Documentation</h1>
+                        <p class="lead">A comprehensive guide to using and customizing the Discord Gemini AI Bot.</p>
+                        <p>The Discord Gemini AI Bot integrates Google's Gemini AI models with Discord, allowing users to interact with state-of-the-art AI directly from your Discord server. This documentation covers everything you need to know about using, configuring, and extending the bot.</p>
+
+                        <div class="alert alert-info mt-4">
+                            <h4 class="alert-heading">Quick Start</h4>
+                            <p>If you haven't set up the bot yet, please refer to the <a href="/setup" class="alert-link">Setup Guide</a> first.</p>
+                        </div>
+                    </section>
+
+                    <section id="commands" class="docs-section">
+                        <h2>Bot Commands</h2>
+                        <p>The bot provides several commands for interacting with Gemini AI:</p>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="card command-card bg-dark">
+                                    <div class="card-header text-info">
+                                        <h3 class="card-title h5 mb-0">!ask</h3>
+                                    </div>
+                                    <div class="card-body">
+                                        <p class="card-text">Ask Gemini AI a question or request it to generate content.</p>
+                                        <h6>Usage:</h6>
+                                        <pre class="bg-black p-2 rounded"><code>!ask [your question or prompt]</code></pre>
+                                        <h6>Example:</h6>
+                                        <pre class="bg-black p-2 rounded"><code>!ask What are black holes?</code></pre>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card command-card bg-dark">
+                                    <div class="card-header text-info">
+                                        <h3 class="card-title h5 mb-0">!analyze</h3>
+                                    </div>
+                                    <div class="card-body">
+                                        <p class="card-text">Analyze an image with Gemini's vision capabilities.</p>
+                                        <h6>Usage:</h6>
+                                        <pre class="bg-black p-2 rounded"><code>!analyze [optional prompt]</code></pre>
+                                        <p><small class="text-muted">*Attach an image when using this command</small></p>
+                                        <h6>Example:</h6>
+                                        <pre class="bg-black p-2 rounded"><code>!analyze What's happening in this image?</code></pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mt-3">
+                            <div class="col-md-6">
+                                <div class="card command-card bg-dark">
+                                    <div class="card-header text-info">
+                                        <h3 class="card-title h5 mb-0">!help_gemini</h3>
+                                    </div>
+                                    <div class="card-body">
+                                        <p class="card-text">Display help information about all available commands.</p>
+                                        <h6>Usage:</h6>
+                                        <pre class="bg-black p-2 rounded"><code>!help_gemini</code></pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section id="configuration" class="docs-section">
+                        <h2>Configuration</h2>
+                        <p>The bot can be configured through environment variables:</p>
+
+                        <table class="table table-dark table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Variable</th>
+                                    <th>Description</th>
+                                    <th>Default</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code>DISCORD_TOKEN</code></td>
+                                    <td>Your Discord bot token</td>
+                                    <td>Required</td>
+                                </tr>
+                                <tr>
+                                    <td><code>GEMINI_API_KEY</code></td>
+                                    <td>Your Google Gemini API key</td>
+                                    <td>Required</td>
+                                </tr>
+                                <tr>
+                                    <td><code>MAX_RESPONSE_LENGTH</code></td>
+                                    <td>Maximum length of each message chunk</td>
+                                    <td>2000</td>
+                                </tr>
+                                <tr>
+                                    <td><code>ALLOWED_CHANNELS</code></td>
+                                    <td>Comma-separated list of channel IDs where the bot is allowed to respond</td>
+                                    <td>All channels</td>
+                                </tr>
+                                <tr>
+                                    <td><code>ALLOWED_ROLES</code></td>
+                                    <td>Comma-separated list of role IDs that can use the bot</td>
+                                    <td>All roles</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <div class="alert alert-warning mt-3">
+                            <h4 class="alert-heading">Security Note</h4>
+                            <p>Never share your API keys or tokens publicly. Use environment variables or Replit's Secrets feature to store them securely.</p>
+                        </div>
+                    </section>
+
+                    <section id="customization" class="docs-section">
+                        <h2>Customization</h2>
+                        <p>You can customize the bot's behavior by modifying the following files:</p>
+
+                        <div class="accordion" id="customizationAccordion">
+                            <div class="accordion-item bg-dark">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed bg-dark text-white" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne">
+                                        <strong>commands.py</strong>
+                                    </button>
+                                </h2>
+                                <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#customizationAccordion">
+                                    <div class="accordion-body">
+                                        <p>This file contains the definitions of bot commands. You can:</p>
+                                        <ul>
+                                            <li>Add new commands</li>
+                                            <li>Modify existing command behavior</li>
+                                            <li>Change command prefixes or names</li>
+                                        </ul>
+                                        <p>To add a new command, follow this template:</p>
+                                        <div class="code-block">
+                                            <pre><code>@bot.command(name="command_name", help="Command description")
+async def command_function(ctx, *, parameter: str):
+    # Command implementation
+    response = await gemini_client.generate_response(parameter)
+    await ctx.send(response)</code></pre>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item bg-dark">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed bg-dark text-white" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo">
+                                        <strong>bot.py</strong>
+                                    </button>
+                                </h2>
+                                <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#customizationAccordion">
+                                    <div class="accordion-body">
+                                        <p>This file handles bot initialization and event handling. You can:</p>
+                                        <ul>
+                                            <li>Modify the bot's status message</li>
+                                            <li>Add event handlers for different Discord events</li>
+                                            <li>Change logging configuration</li>
+                                        </ul>
+                                        <p>To add a new event handler, use this pattern:</p>
+                                        <div class="code-block">
+                                            <pre><code>@bot.event
+async def on_event_name(event_parameters):
+    # Event handling code
+    pass</code></pre>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item bg-dark">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed bg-dark text-white" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree">
+                                        <strong>gemini_client.py</strong>
+                                    </button>
+                                </h2>
+                                <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#customizationAccordion">
+                                    <div class="accordion-body">
+                                        <p>This file manages the interaction with Google's Gemini API. You can:</p>
+                                        <ul>
+                                            <li>Change the default model</li>
+                                            <li>Modify generation parameters like temperature</li>
+                                            <li>Add new methods for different types of AI interactions</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item bg-dark">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed bg-dark text-white" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour">
+                                        <strong>config.py</strong>
+                                    </button>
+                                </h2>
+                                <div id="collapseFour" class="accordion-collapse collapse" data-bs-parent="#customizationAccordion">
+                                    <div class="accordion-body">
+                                        <p>This file handles configuration loading. You can:</p>
+                                        <ul>
+                                            <li>Add new configuration variables</li>
+                                            <li>Change default values</li>
+                                            <li>Implement configuration validation</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section id="limitations" class="docs-section">
+                        <h2>Limitations</h2>
+                        <p>Be aware of the following limitations when using the bot:</p>
+                        <ul>
+                            <li><strong>Message Length:</strong> Discord has a 2000 character limit per message. Long responses from Gemini will be split into multiple messages.</li>
+                            <li><strong>Rate Limits:</strong> Both Discord and Gemini API have rate limits. Heavy usage may result in temporary throttling.</li>
+                            <li><strong>Image Analysis:</strong> The <code>!analyze</code> command only works with directly attached images, not with links to images.</li>
+                            <li><strong>Context:</strong> The bot doesn't maintain conversation context between commands. Each command is processed independently.</li>
+                            <li><strong>Content Policy:</strong> Gemini has content policies that may prevent certain types of responses for harmful or sensitive content.</li>
+                        </ul>
+                    </section>
+
+                    <section id="troubleshooting" class="docs-section">
+                        <h2>Troubleshooting</h2>
+                        <p>Common issues and their solutions:</p>
+
+                        <div class="accordion" id="troubleshootingAccordion">
+                            <div class="accordion-item bg-dark">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed bg-dark text-white" type="button" data-bs-toggle="collapse" data-bs-target="#troubleOne">
+                                        <strong>Bot doesn't respond to commands</strong>
+                                    </button>
+                                </h2>
+                                <div id="troubleOne" class="accordion-collapse collapse" data-bs-parent="#troubleshootingAccordion">
+                                    <div class="accordion-body">
+                                        <p>Check the following:</p>
+                                        <ul>
+                                            <li>Verify that the bot is online in your Discord server</li>
+                                            <li>Ensure you're using the correct command prefix (default is "!")</li>
+                                            <li>Check if you're using the commands in an allowed channel if ALLOWED_CHANNELS is set</li>
+                                            <li>Verify that you have the required role if ALLOWED_ROLES is set</li>
+                                            <li>Check the console logs for any error messages</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item bg-dark">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed bg-dark text-white" type="button" data-bs-toggle="collapse" data-bs-target="#troubleTwo">
+                                        <strong>API Key errors</strong>
+                                    </button>
+                                </h2>
+                                <div id="troubleTwo" class="accordion-collapse collapse" data-bs-parent="#troubleshootingAccordion">
+                                    <div class="accordion-body">
+                                        <p>If you see errors related to API keys:</p>
+                                        <ul>
+                                            <li>Verify that your DISCORD_TOKEN and GEMINI_API_KEY are correctly set in your environment variables</li>
+                                            <li>Check that your Gemini API key is active and has not expired</li>
+                                            <li>Ensure you have the necessary permissions for the models you're trying to access</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item bg-dark">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed bg-dark text-white" type="button" data-bs-toggle="collapse" data-bs-target="#troubleThree">
+                                        <strong>Image analysis not working</strong>
+                                    </button>
+                                </h2>
+                                <div id="troubleThree" class="accordion-collapse collapse" data-bs-parent="#troubleshootingAccordion">
+                                    <div class="accordion-body">
+                                        <p>If the <code>!analyze</code> command isn't working properly:</p>
+                                        <ul>
+                                            <li>Make sure you're attaching an image directly to your message</li>
+                                            <li>Check that the image format is supported (JPEG, PNG, GIF, WEBP)</li>
+                                            <li>Verify that the image file size is within Discord's limits</li>
+                                            <li>Ensure your Gemini API key has access to the vision model</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section id="development" class="docs-section">
+                        <h2>Development</h2>
+                        <p>Information for developers who want to extend or modify the bot:</p>
+
+                        <h4>Project Structure</h4>
+                        <ul>
+                            <li><code>main.py</code> - Entry point script</li>
+                            <li><code>bot.py</code> - Bot initialization and event handlers</li>
+                            <li><code>commands.py</code> - Command definitions and handlers</li>
+                            <li><code>gemini_client.py</code> - Integration with Gemini API</li>
+                            <li><code>config.py</code> - Configuration loading and management</li>
+                            <li><code>.env</code> - Environment variables (not in version control)</li>
+                        </ul>
+
+                        <h4>Adding New Features</h4>
+                        <p>To add new features to the bot:</p>
+                        <ol>
+                            <li>Understand the existing codebase and how components interact</li>
+                            <li>Implement new functionality in the appropriate files</li>
+                            <li>Test thoroughly before deployment</li>
+                            <li>Update documentation to reflect changes</li>
+                        </ol>
+
+                        <h4>Contributing</h4>
+                        <p>Contributions to the project are welcome! If you'd like to contribute:</p>
+                        <ol>
+                            <li>Fork the repository</li>
+                            <li>Create a new branch for your feature</li>
+                            <li>Submit a pull request with a clear description of the changes</li>
+                        </ol>
+                    </section>
+                </div>
+            </div>
+        </div>
+
+        <footer class="py-4 mt-5 bg-dark rounded">
+            <div class="container px-4">
+                <div class="row">
+                    <div class="col-md-6">
+                        <p>&copy; 2025 Discord Gemini AI Bot</p>
+                    </div>
+                    <div class="col-md-6 text-md-end">
+                        <a href="#" class="text-secondary me-3">Privacy Policy</a>
+                        <a href="#" class="text-secondary me-3">Terms of Service</a>
+                        <a href="https://github.com/username/discord-gemini-bot" target="_blank" class="text-secondary">GitHub</a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Smooth scrolling for sidebar links
+        document.querySelectorAll('.docs-sidebar a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                window.scrollTo({
+                    top: targetElement.offsetTop - 20,
+                    behavior: 'smooth'
+                });
+                
+                // Update active link
+                document.querySelectorAll('.docs-sidebar a').forEach(a => a.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+        
+        // Highlight sidebar link based on scroll position
+        window.addEventListener('scroll', function() {
+            const sections = document.querySelectorAll('.docs-section');
+            const navLinks = document.querySelectorAll('.docs-sidebar a');
+            
+            let currentSection = '';
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - 100;
+                if (window.pageYOffset >= sectionTop) {
+                    currentSection = '#' + section.getAttribute('id');
+                }
+            });
+            
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === currentSection) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
